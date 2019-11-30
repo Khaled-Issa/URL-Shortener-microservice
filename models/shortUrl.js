@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const urlSchema = new Schema({
 
     originalUrl: String,
-    shortUrl: String
+    shortenedUrl: String
 
 
 }); ({ timestamps: true});

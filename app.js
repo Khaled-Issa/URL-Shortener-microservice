@@ -27,7 +27,7 @@ app.get('/new/:url(*)',function(req,res,next){
         var short= Math.floor(Math.random()*100000).toString();
         var data = new shortUrl({
             originalUrl: url,
-            shortUrl: short
+            shortenedUrl: short
         });
         
         data.save(function(err){
@@ -36,18 +36,33 @@ app.get('/new/:url(*)',function(req,res,next){
             }
         });
 
-        return res.json({data});
+        return res.json(data);
     }
     var data = new shortUrl({
         originalUrl: url,
-        shortUrl:'Invalid url'
+        shortenedUrl:'Invalid url'
     });
 
     return res.json(data);
 });
 
 
+//Query database and forward to original url
+app.get('/:urlToForward', function(req, res, next){
+    var shortenedUrl = req.params.urlToForward;
 
+    shortUrl.findOne({'shortenedUrl': shortenedUrl}, function(err,data){
+        if(err) return res.send('Error reading database');
+        var re = new RegExp("^(http|https)://", "i");
+        var strToCheck = data.originalUrl;
+        if(re.test(strToCheck)){
+            res.redirect(301,data.originalUrl);
+        }
+        else{
+            res.redirect(301,'http://'+data.originalUrl);
+        }
+    });
+});
 
 
 app.listen(process.env.Port || 3000, function(){
