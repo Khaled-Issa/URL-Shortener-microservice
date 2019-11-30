@@ -8,6 +8,13 @@ const mongoose = require('mongoose');
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use(express.static(__dirname+'/public'));
+
+app.get('/new/:url(*)',function(req,res,next){
+    var url = req.params.url;
+});
+
+
 
 
 
