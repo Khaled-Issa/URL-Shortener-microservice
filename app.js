@@ -12,6 +12,8 @@ app.use(express.static(__dirname+'/public'));
 
 app.get('/new/:url(*)',function(req,res,next){
     var url = req.params.url;
+
+    return res.json({url});
 });
 
 
